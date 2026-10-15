@@ -4,153 +4,338 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ग्राम पंचायत — जनसंपर्क</title>
+  <meta name="description" content="ग्राम पंचायत की जानकारी और जनसंपर्क फॉर्म">
+  <title>ग्राम पंचायत गेहूंखेड़ी — जनसंपर्क</title>
+
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      background: #f5f7fa;
+      font-family: Arial, "Noto Sans Devanagari", sans-serif;
+      background: #f4f7f5;
       color: #222;
       line-height: 1.6;
     }
+
     header {
       background: #176b43;
-      color: white;
-      padding: 24px 16px;
+      color: #fff;
+      padding: 28px 16px;
       text-align: center;
     }
+
+    header h1 {
+      margin: 0 0 8px;
+    }
+
+    header p {
+      margin: 0;
+    }
+
     main {
-      max-width: 650px;
-      margin: 20px auto;
-      padding: 0 16px;
-    }
-    section {
-      background: white;
-      padding: 20px;
-      margin-bottom: 16px;
-      border-radius: 12px;
-    }
-    input:not([type="checkbox"]), textarea, button {
       width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+      max-width: 680px;
+      margin: 24px auto;
+      padding: 0 14px;
     }
-    textarea { min-height: 110px; }
-    label { display: block; margin-top: 14px; }
-    input[type="checkbox"] { width: auto; }
+
+    section {
+      background: #fff;
+      padding: 22px;
+      margin-bottom: 18px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    h2 {
+      color: #176b43;
+      margin-top: 0;
+    }
+
+    input:not([type="checkbox"]),
+    textarea {
+      display: block;
+      width: 100%;
+      margin-top: 12px;
+      padding: 13px;
+      font-size: 16px;
+      border: 1px solid #cbd5ce;
+      border-radius: 7px;
+      background: #fff;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: 2px solid #8bc7a7;
+      border-color: #176b43;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 7px;
+      transform: scale(1.1);
+    }
+
+    .captcha-wrap {
+      margin-top: 20px;
+      overflow-x: auto;
+    }
+
     button {
-      background: #176b43;
-      color: white;
+      width: 100%;
+      padding: 14px;
+      margin-top: 18px;
       border: 0;
+      border-radius: 7px;
+      background: #176b43;
+      color: #fff;
+      font-size: 16px;
       cursor: pointer;
     }
-    button:disabled { opacity: 0.6; }
-    footer { text-align: center; padding: 20px; }
+
+    button:disabled {
+      background: #8a9c91;
+      cursor: not-allowed;
+    }
+
+    #result {
+      margin-top: 15px;
+      overflow-wrap: anywhere;
+      font-weight: 600;
+    }
+
+    footer {
+      text-align: center;
+      padding: 18px;
+      color: #555;
+    }
   </style>
 </head>
+
 <body>
   <header>
-    <h1>ग्राम पंचायत गेहूंखेड़ी जागीर की जानकारी</h1>
-    <p>उम्मीदवार का जीतेन्द्र सिंह उमठ s/o राजेंद्र सिंह उमठ एवं जनसंपर्क</p>
+    <h1>ग्राम पंचायत गेहूंखेड़ी</h1>
+    <p>ग्राम की जानकारी एवं जनसंपर्क</p>
   </header>
 
   <main>
     <section>
-      <h2>उम्मीदवार का परिचय</h2>
-      <p>यहाँ उम्मीदवार का परिचय और सार्वजनिक विकास संबंधी प्राथमिकताएँ लिखें।</p>
+      <h2>परिचय</h2>
+      <p>
+        ग्राम पंचायत से संबंधित जानकारी, जनसमस्याएँ और
+        विकास संबंधी सुझाव देने के लिए इस वेबसाइट का उपयोग करें।
+      </p>
+      <p>
+        यहाँ आवश्यकतानुसार उम्मीदवार का परिचय और
+        सार्वजनिक विकास संबंधी प्राथमिकताएँ जोड़ी जा सकती हैं।
+      </p>
     </section>
 
     <section>
       <h2>जनसंपर्क फॉर्म</h2>
-      <p>अपनी समस्या या सुझाव दर्ज करें।</p>
+      <p>अपनी समस्या या सुझाव दर्ज करें। सभी आवश्यक जानकारी भरें।</p>
 
       <form id="contactForm">
-        <input name="full_name" placeholder="आपका पूरा नाम"
-          maxlength="100" autocomplete="name" required>
+        <input
+          name="full_name"
+          type="text"
+          placeholder="आपका पूरा नाम"
+          maxlength="100"
+          autocomplete="name"
+          required
+        >
 
-        <input name="phone" type="tel" placeholder="मोबाइल नंबर"
-          maxlength="20" autocomplete="tel" required>
+        <input
+          name="phone"
+          type="tel"
+          placeholder="मोबाइल नंबर"
+          maxlength="20"
+          autocomplete="tel"
+          required
+        >
 
-        <input name="village" placeholder="आपके ग्राम का नाम"
-          maxlength="100" required>
+        <input
+          name="village"
+          type="text"
+          placeholder="आपके ग्राम का नाम"
+          maxlength="100"
+          required
+        >
 
-        <textarea name="message"
+        <textarea
+          name="message"
           placeholder="अपनी समस्या या सुझाव लिखें"
-          maxlength="3000" required></textarea>
+          maxlength="3000"
+          required
+        ></textarea>
 
         <label>
-          <input type="checkbox" name="consent_contact" required>
-          मैं जनसंपर्क अनुरोध के लिए अपनी जानकारी देने की सहमति देता/देती हूँ।
+          <input
+            type="checkbox"
+            name="consent_contact"
+            required
+          >
+          मैं जनसंपर्क अनुरोध के लिए अपनी जानकारी देने
+          और इस संबंध में संपर्क किए जाने की सहमति देता/देती हूँ।
         </label>
 
         <label>
-          <input type="checkbox" name="consent_voice">
-          मैं वॉइस संपर्क के लिए सहमति देता/देती हूँ।
+          <input
+            type="checkbox"
+            name="consent_voice"
+          >
+          मैं वॉइस कॉल के माध्यम से संपर्क किए जाने की
+          सहमति देता/देती हूँ।
         </label>
 
-        <button id="submitBtn" type="submit">अनुरोध जमा करें</button>
+        <div class="captcha-wrap">
+          <div
+            class="cf-turnstile"
+            data-sitekey="0x4AAAAAAFXiSC5rHFARf6rC"
+            data-callback="onTurnstileSuccess"
+            data-expired-callback="onTurnstileExpired"
+            data-error-callback="onTurnstileError"
+            data-theme="light"
+          ></div>
+        </div>
+
+        <button id="submitBtn" type="submit" disabled>
+          पहले CAPTCHA पूरा करें
+        </button>
       </form>
+
       <p id="result" role="status" aria-live="polite"></p>
     </section>
   </main>
 
-  <footer><small>जनसंपर्क वेबसाइट</small></footer>
+  <footer>
+    <small>ग्राम पंचायत गेहूंखेड़ी — जनसंपर्क वेबसाइट</small>
+  </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const SUPABASE_URL = "https://bwqyokgeyizvabyhgdsv.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_uHikwgUrZSRqLUC4IqBdxQ_dGGnsGtT";
-
-    const db = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
+    let captchaToken = "";
 
     const form = document.getElementById("contactForm");
     const result = document.getElementById("result");
-    const button = document.getElementById("submitBtn");
+    const submitBtn = document.getElementById("submitBtn");
 
-    form.addEventListener("submit", async function(e) {
-      e.preventDefault();
+    window.onTurnstileSuccess = function(token) {
+      captchaToken = token;
+      submitBtn.disabled = false;
+      submitBtn.textContent = "अनुरोध जमा करें";
+      result.textContent = "";
+    };
 
-      const data = {
-        full_name: form.elements.full_name.value.trim(),
-        phone: form.elements.phone.value.trim(),
-        village: form.elements.village.value.trim(),
-        message: form.elements.message.value.trim(),
-        consent_contact: form.elements.consent_contact.checked,
-        consent_voice: form.elements.consent_voice.checked
-      };
+    window.onTurnstileExpired = function() {
+      captchaToken = "";
+      submitBtn.disabled = true;
+      submitBtn.textContent = "पहले CAPTCHA पूरा करें";
+      result.textContent = "CAPTCHA समाप्त हो गया है। दोबारा पूरा करें।";
+    };
 
-      if (!data.consent_contact) {
-        result.textContent = "कृपया जनसंपर्क की सहमति दें।";
+    window.onTurnstileError = function() {
+      captchaToken = "";
+      submitBtn.disabled = true;
+      submitBtn.textContent = "पहले CAPTCHA पूरा करें";
+      result.textContent =
+        "CAPTCHA लोड नहीं हुआ। इंटरनेट जाँचकर पेज रीफ्रेश करें।";
+    };
+
+    const SUPABASE_URL =
+      "https://bwqyokgeyizvabyhgdsv.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_uHikwgUrZSRqLUC4IqBdxQ_dGGnsGtT";
+
+    form.addEventListener("submit", async function(event) {
+      event.preventDefault();
+
+      if (!captchaToken) {
+        result.textContent = "कृपया पहले CAPTCHA पूरा करें।";
         return;
       }
 
-      button.disabled = true;
-      result.textContent = "अनुरोध जमा हो रहा है...";
+      if (!form.reportValidity()) {
+        return;
+      }
+
+      const data = {
+        full_name: form.elements["full_name"].value.trim(),
+        phone: form.elements["phone"].value.trim(),
+        village: form.elements["village"].value.trim(),
+        message: form.elements["message"].value.trim(),
+        consent_contact: form.elements["consent_contact"].checked,
+        consent_voice: form.elements["consent_voice"].checked,
+        captchaToken: captchaToken
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "जमा हो रहा है...";
+      result.textContent = "आपका अनुरोध जमा हो रहा है...";
 
       try {
-        const { error } = await db
-          .from("contact_requests")
-          .insert([data]);
+        const response = await fetch(
+          SUPABASE_URL + "/functions/v1/smooth-handler",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "apikey": SUPABASE_KEY,
+              "Authorization": "Bearer " + SUPABASE_KEY
+            },
+            body: JSON.stringify(data)
+          }
+        );
 
-        if (error) throw error;
+        const answer = await response.json();
 
-        result.textContent = "आपका अनुरोध सफलतापूर्वक जमा हो गया।";
-        form.reset();
-      } catch (error) {
-        console.error("Supabase submission error:", error);
+        if (!response.ok) {
+          throw new Error(
+            answer.message || "अनुरोध जमा नहीं हो सका।"
+          );
+        }
+
         result.textContent =
-          "अनुरोध जमा नहीं हुआ। कृपया सेटिंग या अनुमति जाँचें।";
+          answer.message || "आपका अनुरोध सफलतापूर्वक जमा हो गया।";
+
+        form.reset();
+
+      } catch (error) {
+        console.error("Submission error:", error);
+
+        result.textContent =
+          error.message ||
+          "अनुरोध जमा नहीं हो सका। कृपया दोबारा कोशिश करें।";
+
       } finally {
-        button.disabled = false;
+        captchaToken = "";
+
+        if (window.turnstile) {
+          window.turnstile.reset();
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "पहले CAPTCHA पूरा करें";
       }
     });
   </script>
+
+  <script
+    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+    async
+    defer
+  ></script>
 </body>
 </html>
