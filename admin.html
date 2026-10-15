@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Login — ग्राम पंचायत</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7f5;
+      margin: 0;
+      padding: 24px 14px;
+      color: #222;
+    }
+    main {
+      max-width: 760px;
+      margin: auto;
+    }
+    section {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 10px #0000000d;
+    }
+    input, button {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      margin-top: 12px;
+      font-size: 16px;
+      border-radius: 6px;
+    }
+    input { border: 1px solid #ccc; }
+    button {
+      background: #176b43;
+      color: white;
+      border: 0;
+      cursor: pointer;
+    }
+    button:disabled { opacity: .6; }
+    .request {
+      border-top: 1px solid #ddd;
+      padding: 14px 0;
+      overflow-wrap: anywhere;
+    }
+    #message { overflow-wrap: anywhere; }
+    .muted { color: #555; }
+  </style>
+</head>
+<body>
+<main>
+  <section>
+    <h1>Admin Login</h1>
+    <p class="muted">केवल अधिकृत प्रशासक के लिए।</p>
+
+    <form id="loginForm">
+      <input id="email" type="email"
+        placeholder="Admin ईमेल" autocomplete="username" required>
+      <input id="password" type="password"
+        placeholder="पासवर्ड" autocomplete="current-password" required>
+      <button id="loginBtn" type="submit">लॉगिन करें</button>
+    </form>
+
+    <p id="message" role="status" aria-live="polite"></p>
+  </section>
+
+  <section id="dashboard" hidden>
+    <h2>प्राप्त जनसंपर्क अनुरोध</h2>
+    <button id="refreshBtn" type="button">अनुरोध रीफ्रेश करें</button>
+    <button id="logoutBtn" type="button">लॉगआउट</button>
+    <div id="requests"></div>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://bwqyokgeyizvabyhgdsv.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_uHikwgUrZSRqLUC4IqBdxQ_dGGnsGtT";
+
+  const client = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY,
+    {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true
+      }
+    }
+  );
+
+  const loginForm = document.getElementById("loginForm");
+  const loginBtn = document.getElementById("loginBtn");
+  const message = document.getElementById("message");
+  const dashboard = document.getElementById("dashboard");
+  const requests = document.getElementById("requests");
+
+  function showMessage(text) {
+    message.textContent = text;
+  }
+
+  function addText(parent, tag, text) {
+    const el = document.createElement(tag);
+    el.textContent = text == null ? "" : String(text);
+    parent.appendChild(el);
+    return el;
+  }
+
+  async function loadRequests() {
+    requests.replaceChildren();
+    addText(requests, "p", "अनुरोध लोड हो रहे हैं...");
+
+    const { data, error } = await client
+      .from("contact_requests")
+      .select("id, created_at, full_name, phone, village, message, consent_voice")
+      .order("created_at", { ascending: false })
+      .limit(100);
+
+    requests.replaceChildren();
+
+    if (error) {
+      addText(requests, "p",
+        "अनुरोध लोड नहीं हुए। Admin अनुमति और RLS सेटिंग जाँचें।");
+      console.error("Request loading failed:", error.message);
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      addText(requests, "p", "अभी कोई अनुरोध नहीं मिला।");
+      return;
+    }
+
+    for (const item of data) {
+      const card = document.createElement("article");
+      card.className = "request";
+
+      addText(card, "h3", item.full_name);
+      addText(card, "p", "मोबाइल: " + item.phone);
+      addText(card, "p", "ग्राम: " + item.village);
+      addText(card, "p", "संदेश: " + item.message);
+      addText(card, "p",
+        "वॉइस संपर्क सहमति: " + (item.consent_voice ? "हाँ" : "नहीं"));
+      addText(card, "small",
+        "जमा समय: " + new Date(item.created_at).toLocaleString("hi-IN"));
+
+      requests.appendChild(card);
+    }
+  }
+
+  async function showDashboard() {
+    const { data: { user } } = await client.auth.getUser();
+
+    if (!user) {
+      dashboard.hidden = true;
+      return;
+    }
+
+    const { data: isAdmin, error } = await client.rpc("is_contact_admin");
+
+    if (error || isAdmin !== true) {
+      await client.auth.signOut();
+      dashboard.hidden = true;
+      showMessage("इस अकाउंट को Admin अनुमति नहीं मिली है।");
+      return;
+    }
+
+    dashboard.hidden = false;
+    loginForm.hidden = true;
+    showMessage("लॉगिन सफल।");
+    await loadRequests();
+  }
+
+  loginForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    loginBtn.disabled = true;
+    showMessage("लॉगिन जाँचा जा रहा है...");
+
+    try {
+      const { error } = await client.auth.signInWithPassword({
+        email: document.getElementById("email").value.trim(),
+        password: document.getElementById("password").value
+      });
+
+      if (error) {
+        showMessage("लॉगिन असफल। ईमेल और पासवर्ड जाँचें।");
+        return;
+      }
+
+      await showDashboard();
+    } catch (error) {
+      console.error(error);
+      showMessage("लॉगिन पूरा नहीं हो सका।");
+    } finally {
+      loginBtn.disabled = false;
+    }
+  });
+
+  document.getElementById("refreshBtn").addEventListener("click", loadRequests);
+
+  document.getElementById("logoutBtn").addEventListener("click", async () => {
+    await client.auth.signOut();
+    dashboard.hidden = true;
+    loginForm.hidden = false;
+    requests.replaceChildren();
+    showMessage("आप लॉगआउट हो गए हैं।");
+  });
+
+  client.auth.onAuthStateChange((event, session) => {
+    if (event === "SIGNED_OUT" || !session) {
+      dashboard.hidden = true;
+      loginForm.hidden = false;
+      requests.replaceChildren();
+    }
+  });
+
+  (async function init() {
+    const { data: { session } } = await client.auth.getSession();
+    if (session) {
+      await showDashboard();
+    }
+  })();
+</script>
+</body>
+</html>
