@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ग्राम पंचायत — आधिकारिक जानकारी</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f5f7fa;
+      color: #222;
+    }
+    header {
+      background: #176b43;
+      color: white;
+      padding: 24px 16px;
+      text-align: center;
+    }
+    main {
+      max-width: 650px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    section {
+      background: white;
+      padding: 20px;
+      margin-bottom: 16px;
+      border-radius: 12px;
+    }
+    input, textarea, button {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    button {
+      background: #176b43;
+      color: white;
+      border: 0;
+      border-radius: 6px;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ग्राम पंचायत की जानकारी</h1>
+    <p>उम्मीदवार का परिचय एवं जनसंपर्क</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>उम्मीदवार का परिचय</h2>
+      <p>यहाँ उम्मीदवार का परिचय और सार्वजनिक
+      विकास संबंधी प्राथमिकताएँ लिखें।</p>
+    </section>
+
+    <section>
+      <h2>जनसंपर्क</h2>
+      <p>अपनी समस्या या सुझाव दर्ज करें।</p>
+      <form id="contactForm">
+        <input name="name" placeholder="आपका नाम" required>
+        <textarea name="message"
+          placeholder="आपका सुझाव" required></textarea>
+        <label>
+          <input type="checkbox" required
+            style="width:auto">
+          मेरी जानकारी जनसंपर्क के लिए इस्तेमाल करने
+          की शर्तें मैंने पढ़ ली हैं।
+        </label>
+        <button type="submit">संदेश तैयार करें</button>
+      </form>
+      <p id="result"></p>
+    </section>
+  </main>
+
+  <footer>
+    <small>जनसंपर्क वेबसाइट</small>
+  </footer>
+
+  <script>
+    document.getElementById("contactForm")
+      .addEventListener("submit", function(e) {
+        e.preventDefault();
+        document.getElementById("result").textContent =
+          "फॉर्म का नमूना तैयार है। डेटा भेजने के लिए " +
+          "सुरक्षित बैकएंड जोड़ना आवश्यक है।";
+      });
+  </script>
+</body>
+</html>
